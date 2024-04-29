@@ -1,0 +1,31 @@
+name: Deploy DEV
+on:
+  push:
+    branches:
+      - main
+env:
+  Environment: "DEV"
+  EnvironmentLower : dev 
+  SAM_BUCKET_NAME: ${{ vars.SAM_BUCKET_NAME }}
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+
+      - name: SAM Build
+        run: sam build --use-container
+        
+
+      - name: SAM Deploy
+        run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --s3-bucket $SAM_BUCKET_NAME --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --no-fail-on-empty-changeset --stack-name "web-scrapping-stack" --s3-prefix "web-scrapping-stack-$Environment" --parameter-overrides ParameterKey=Environment,ParameterValue=$Environment ParameterKey=EnvironmentLower,ParameterValue=$EnvironmentLower
+        

@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  web-scrapping
+
+Globals:
+  Function:
+    Timeout: 300
+    MemorySize: 128
+
+
+Resources:
+  MyScrapyBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: webscrap-bucket
+
+
+  MyScrapyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      CodeUri: web-scrapping/hello_world
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref MyScrapyBucket
+      Environment:
+        Variables:
+          SCRAPY_S3_BUCKET: !Ref MyScrapyBucket
