@@ -15,6 +15,27 @@ Resources:
     Properties:
       BucketName: webscrap-bucket
 
+  httpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:  
+      AccessLogSettings:
+        DestinationArn: !GetAtt AccessLogs.Arn
+        Format: $context.requestId
+      CorsConfiguration:
+        AllowOrigins: 
+          - "*"
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - GET
+          - PUT
+          - POST
+          - OPTIONS
+          - DELETE
+      FailOnWarnings: True
+  AccessLogs:
+    Type: AWS::Logs::LogGroup
+
 
   MyScrapyFunction:
     Type: AWS::Serverless::Function
@@ -28,4 +49,23 @@ Resources:
       Environment:
         Variables:
           SCRAPY_S3_BUCKET: !Ref MyScrapyBucket
-          
+
+  MyGensimQuery:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.gensim_query
+      Runtime: python3.12
+      CodeUri: web-scrapping/hello_world
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref MyScrapyBucket
+      Environment:
+        Variables:
+          SCRAPY_S3_BUCKET: !Ref MyScrapyBucket
+      Events:
+        PostAlertEvent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref httpApi
+            Path: /
+            Method: post

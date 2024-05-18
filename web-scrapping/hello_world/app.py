@@ -3,9 +3,10 @@ import requests
 import boto3
 import os
 
+
+
 def lambda_handler(event, context):
     bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
-
     url = "https://www.fih.hockey/default.aspx?methodtype=3&client=8696669363&sport=5&league=0&timezone=0530&language=en&gamestate=4"
 
     payload = ""
@@ -56,3 +57,20 @@ def lambda_handler(event, context):
         'body': json.dumps('Data written to match.json in S3 bucket successfully.')
     }
 
+def gensim_query(event,context):
+    body = json.loads(event['body'])
+    input_prompt = body['prompt']
+    print("input_prompt", input_prompt)
+   
+    bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
+    FILE_TO_READ = 'match.json'
+    s3 = boto3.client('s3')
+    response = s3.get_object(Bucket=bucket_name, Key=FILE_TO_READ)
+    content = response['Body'].read().decode('utf-8')
+    data = json.loads(content)
+    print("##data is##", data)
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Successful query')
+    }
