@@ -2,10 +2,6 @@ import json
 import requests
 import boto3
 import os
-from collections import defaultdict
-from gensim import corpora
-from gensim import models
-from gensim import similarities
 
 def lambda_handler(event, context):
     bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
