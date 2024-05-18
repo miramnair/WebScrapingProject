@@ -2,7 +2,10 @@ import json
 import requests
 import boto3
 import os
-
+from collections import defaultdict
+from gensim import corpora
+from gensim import models
+from gensim import similarities
 
 
 def lambda_handler(event, context):
@@ -60,7 +63,6 @@ def lambda_handler(event, context):
 def gensim_query(event,context):
     body = json.loads(event['body'])
     input_prompt = body['prompt']
-    print("input_prompt", input_prompt)
    
     bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
     FILE_TO_READ = 'match.json'
@@ -68,7 +70,30 @@ def gensim_query(event,context):
     response = s3.get_object(Bucket=bucket_name, Key=FILE_TO_READ)
     content = response['Body'].read().decode('utf-8')
     data = json.loads(content)
-    print("##data is##", data)
+    
+    for match in data:
+        match['team_names'] = ' '.join(match['team_names'])
+    texts = []
+    for item in data:
+      split_data = " ".join(str(v) for v in item.values())
+      tokens = split_data.lower().split()
+      texts.append(tokens)
+
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
+
+    lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=5)
+    vec_bow = dictionary.doc2bow(input_prompt.lower().split())
+    vec_lsi = lsi[vec_bow]  # convert the query to LSI space
+
+    num_features = len(dictionary)
+    index = similarities.MatrixSimilarity(lsi[corpus],num_features=num_features)
+    sims = index[vec_lsi] 
+    sims = sorted(enumerate(sims), key=lambda item: -item[1])
+
+    for doc_position, doc_score in sims:
+        print("doc_score",doc_score)
+        print(data[doc_position],'\n')
 
     return {
         'statusCode': 200,
