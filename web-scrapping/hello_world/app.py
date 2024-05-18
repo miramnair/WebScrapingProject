@@ -61,7 +61,6 @@ def lambda_handler(event, context):
     }
 
 def query_handler(event,context):
-    
     body = json.loads(event['body'])
     input_prompt = body['prompt']
     print("input_prompt", input_prompt)
