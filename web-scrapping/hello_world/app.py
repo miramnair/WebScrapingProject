@@ -2,6 +2,11 @@ import json
 import requests
 import boto3
 import os
+import pandas as pd
+from collections import defaultdict
+from gensim import corpora
+from gensim import models
+from gensim import similarities
 
 def lambda_handler(event, context):
     bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
@@ -55,3 +60,53 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Data written to match.json in S3 bucket successfully.')
     }
+
+def query_handler(event):
+    
+    body = json.loads(event['body'])
+    input_prompt = body['prompt']
+    print("input_prompt", input_prompt)
+
+    # Fetch the file from S3
+    bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
+    s3 = boto3.client('s3')
+    response = s3.get_object(Bucket=bucket_name)
+    content = response['Body'].read().decode('utf-8')
+    data = json.loads(content)
+    print("##data is##", data)
+    #df = pd.read_json('/Users/meeranair/Downloads/match.json')
+
+
+    #df[['team_name_1', 'team_name_2']] = pd.DataFrame(df['team_names'].tolist())
+    # Drop the original 'team_names'
+    #df.drop(columns=['team_names'], inplace=True)
+
+
+    #texts=[]
+    #for row in df.values:
+    #    tokens = ' '.join(map(str, row)).lower().split()
+    #    texts.append(tokens)
+
+                
+    #dictionary = corpora.Dictionary(texts)
+    #corpus = [dictionary.doc2bow(text) for text in texts]
+
+
+    #lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=7)
+
+    #query = "pakistan japan completed"
+    #vec_bow = dictionary.doc2bow(query.lower().split())
+    #vec_lsi = lsi[vec_bow]  # convert the query to LSI space
+    #print(vec_lsi)
+
+    #index = similarities.MatrixSimilarity(lsi[corpus])
+    #sims = index[vec_lsi] 
+
+    #sims = sorted(enumerate(sims), key=lambda item: -item[1])
+
+    #for doc_position, doc_score in sims:
+    #    print("doc_score",doc_score)
+    #    print(df.iloc[doc_position],'\n')
+
+
+
