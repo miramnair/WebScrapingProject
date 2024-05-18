@@ -97,5 +97,5 @@ def gensim_query(event,context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Successful query')
+        'body': json.dumps(data[doc_position])
     }
