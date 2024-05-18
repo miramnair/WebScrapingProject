@@ -93,10 +93,9 @@ def gensim_query(event,context):
 
     results = []
     for doc_position, doc_score in sims:
-        results.append({
-            'doc_score': doc_score,
+        results.append(
             'document': data[doc_position]
-        })
+        )
 
     return {
         'statusCode': 200,
