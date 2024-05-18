@@ -91,11 +91,14 @@ def gensim_query(event,context):
     sims = index[vec_lsi] 
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
+    results = []
     for doc_position, doc_score in sims:
-        print("doc_score",doc_score)
-        print(data[doc_position],'\n')
+        results.append({
+            'doc_score': doc_score,
+            'document': data[doc_position]
+        })
 
     return {
         'statusCode': 200,
-        'body': json.dumps(data[doc_position])
+        'body': json.dumps(results)
     }
