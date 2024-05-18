@@ -40,7 +40,7 @@ Resources:
   MyScrapyFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.lambda_handler
+      Handler: ./web-scrapping/hello_world/app.pyapp.lambda_handler
       Runtime: python3.12
       CodeUri: web-scrapping/hello_world
       Policies:
@@ -53,7 +53,7 @@ Resources:
   MyQueryFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.query_handler
+      Handler: ./web-scrapping/hello_world/app.query_handler
       Runtime: python3.12
       CodeUri: web-scraping/hello_world
       Policies:

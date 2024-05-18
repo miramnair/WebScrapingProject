@@ -2,7 +2,6 @@ import json
 import requests
 import boto3
 import os
-import pandas as pd
 from collections import defaultdict
 from gensim import corpora
 from gensim import models
@@ -61,7 +60,7 @@ def lambda_handler(event, context):
         'body': json.dumps('Data written to match.json in S3 bucket successfully.')
     }
 
-def query_handler(event):
+def query_handler(event,context):
     
     body = json.loads(event['body'])
     input_prompt = body['prompt']
@@ -70,11 +69,11 @@ def query_handler(event):
     # Fetch the file from S3
     bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
     FILE_TO_READ = 'match.json'
-    #s3 = boto3.client('s3')
-    #response = s3.get_object(Bucket=bucket_name, Key=FILE_TO_READ)
-    #content = response['Body'].read().decode('utf-8')
-    #data = json.loads(content)
-    #print("##data is##", data)
+    s3 = boto3.client('s3')
+    response = s3.get_object(Bucket=bucket_name, Key=FILE_TO_READ)
+    content = response['Body'].read().decode('utf-8')
+    data = json.loads(content)
+    print("##data is##", data)
     #df = pd.read_json('/Users/meeranair/Downloads/match.json')
 
 
@@ -108,6 +107,8 @@ def query_handler(event):
     #for doc_position, doc_score in sims:
     #    print("doc_score",doc_score)
     #    print(df.iloc[doc_position],'\n')
+    return {
+        'statusCode': 200}
 
 
 
