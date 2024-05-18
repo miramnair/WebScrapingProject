@@ -69,8 +69,9 @@ def query_handler(event):
 
     # Fetch the file from S3
     bucket_name = os.environ.get('SCRAPY_S3_BUCKET')
+    FILE_TO_READ = 'match.json'
     s3 = boto3.client('s3')
-    response = s3.get_object(Bucket=bucket_name)
+    response = s3.get_object(Bucket=bucket_name, Key=FILE_TO_READ)
     content = response['Body'].read().decode('utf-8')
     data = json.loads(content)
     print("##data is##", data)
