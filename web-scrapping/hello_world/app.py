@@ -96,7 +96,7 @@ def gensim_query(event,context):
         results.append(data[doc_position])
 
     def format_results(results):
-        formatted_results = {"Women's Indoor Asia Cup 2024": [], "Men's Indoor Asia Cup 2024": []}
+        formatted_results = {"Women's Indoor Asia Cup 2024": [],"Men's Indoor Asia Cup 2024": []}
 
         for result in results:
             match_details = {
@@ -107,10 +107,10 @@ def gensim_query(event,context):
             "match_details": result["tour_name"]
             }
 
-        #if "Women's" in result["tour_name"]:
-        formatted_results["Women's Indoor Asia Cup 2024"].append(match_details)
-        #else:
-        #    formatted_results["Men's Indoor Asia Cup 2024"].append(match_details)
+            if "Women's" in result["tour_name"]:
+                formatted_results["Women's Indoor Asia Cup 2024"].append(match_details)
+            else:
+                formatted_results["Men's Indoor Asia Cup 2024"].append(match_details)
 
         return formatted_results
 
