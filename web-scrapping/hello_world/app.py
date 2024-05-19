@@ -103,7 +103,8 @@ def gensim_query(event,context):
             "Match": result["team_names"],
             "Date": result["match_date"],
             "Status": result["event_status"],
-            "Score": result["winning_margin"] if result["event_status"] == "Match Completed" else "Yet to begin"
+            "Score": result["winning_margin"] if result["event_status"] == "Match Completed" else "Yet to begin",
+            "match_details": result["tour_name"]
             }
 
         #if "Women's" in result["tour_name"]:
