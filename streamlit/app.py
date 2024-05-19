@@ -16,6 +16,7 @@ if st.button("Search"):
         for match in results:
                 st.write("**Match:**", match["tour_name"])
                 st.write("**Date:**", match["match_date"])
+                st.write("**Teams:**", match["team_names"].split()[0], "Vs", match["team_names"].split()[1])
                 st.write("**Status:**", match["event_status"])
                 st.write("**Score:**", match["winning_margin"])
                 st.write("---")
