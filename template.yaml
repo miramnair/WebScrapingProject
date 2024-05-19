@@ -88,7 +88,7 @@ Resources:
     Properties:
       ApplicationName: !Ref StreamlitApp
       EnvironmentName: streamlit-app-env
-      SolutionStackName: "64bit Amazon Linux 2 v3.3.8 running Python 3.8"
+      SolutionStackName: "64bit Amazon Linux 2 v3.3.14 running Python 3.8"
       OptionSettings:
         - Namespace: aws:elasticbeanstalk:container:python
           OptionName: WSGIPath
