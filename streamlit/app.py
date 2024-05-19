@@ -13,14 +13,12 @@ if st.button("Search"):
     if response.status_code == 200:
         results = response.json()
         st.write("### **Search Results**")
-        for tournament, matches in results.items():
-            st.write(f"### **{tournament}**")
-            for match in matches:
-                st.write("**Match:**", match["Match"])
-                st.write("**Date:**", match["Date"])
-                st.write("**Status:**", match["Status"])
-                st.write("**Score:**", match["Score"])
+        for match in results:
+                st.write("**Match:**", match["tour_name"])
+                st.write("**Date:**", match["match_date"])
+                st.write("**Status:**", match["event_status"])
+                st.write("**Score:**", match["winning_margin"])
                 st.write("---")
-            else:
+        else:
                 st.write("Error in fetching results")
 
