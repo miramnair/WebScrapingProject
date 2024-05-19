@@ -69,3 +69,30 @@ Resources:
             ApiId: !Ref httpApi
             Path: /
             Method: post
+
+  StreamlitApp:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: streamlit-app
+
+  StreamlitAppVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName: !Ref StreamlitApp
+      SourceBundle:
+        S3Bucket: webscrap-streamlit-webpage
+        S3Key: streamlit-app.zip
+
+  StreamlitAppEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName: !Ref StreamlitApp
+      EnvironmentName: streamlit-app-env
+      SolutionStackName: "64bit Amazon Linux 2 v3.3.8 running Python 3.8"
+      OptionSettings:
+        - Namespace: aws:elasticbeanstalk:container:python
+          OptionName: WSGIPath
+          Value: app:app
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: InstanceType
+          Value: t3.micro
