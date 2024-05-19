@@ -7,3 +7,6 @@ The provided code consists of two AWS Lambda functions: lambda_handler and gensi
 
 **Query and Similarity Search**: gensim_query function retrieves the stored data, processes it using Gensim, and performs a similarity search based on a user-provided query, returning the most relevant match information.
 
+
+
+![alt text](image.png)
