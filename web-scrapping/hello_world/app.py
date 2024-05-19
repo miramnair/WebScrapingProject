@@ -94,7 +94,7 @@ def gensim_query(event,context):
     results = []
     for doc_position, doc_score in sims:
         results.append(data[doc_position])
-
+    """
     def format_results(results):
         formatted_matches = []
 
@@ -112,7 +112,7 @@ def gensim_query(event,context):
         return formatted_matches
 
     formatted_results = format_results(results)
-
+    """
     return {
         'statusCode': 200,
         'body': json.dumps(results.json)
