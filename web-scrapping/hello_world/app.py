@@ -105,10 +105,10 @@ def gensim_query(event,context):
             "Status": result["event_status"],
             "Score": result["winning_margin"] if result["event_status"] == "Match Completed" else "Yet to begin"
         }
-            if "Women's" in result["tour_name"]:
-                formatted_results["Women's Indoor Asia Cup 2024"].append(match_details)
-            else:
-                formatted_results["Men's Indoor Asia Cup 2024"].append(match_details)
+        if "Women's" in result["tour_name"]:
+            formatted_results["Women's Indoor Asia Cup 2024"].append(match_details)
+        else:
+            formatted_results["Men's Indoor Asia Cup 2024"].append(match_details)
 
         return formatted_results
 
