@@ -115,5 +115,5 @@ def gensim_query(event,context):
     """
     return {
         'statusCode': 200,
-        'body': json.dumps(results.json)
+        'body': json.dumps(results)
     }
