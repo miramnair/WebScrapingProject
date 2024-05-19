@@ -95,7 +95,26 @@ def gensim_query(event,context):
     for doc_position, doc_score in sims:
         results.append(data[doc_position])
 
+    def format_results(results):
+        formatted_results = {"Women's Indoor Asia Cup 2024": [], "Men's Indoor Asia Cup 2024": []}
+
+        for result in results:
+            match_details = {
+            "Match": result["team_names"],
+            "Date": result["match_date"],
+            "Status": result["event_status"],
+            "Score": result["winning_margin"] if result["event_status"] == "Match Completed" else "Yet to begin"
+        }
+            if "Women's" in result["tour_name"]:
+                formatted_results["Women's Indoor Asia Cup 2024"].append(match_details)
+            else:
+                formatted_results["Men's Indoor Asia Cup 2024"].append(match_details)
+
+        return formatted_results
+
+    formatted_results = format_results(results)
+
     return {
         'statusCode': 200,
-        'body': json.dumps(results)
+        'body': json.dumps(formatted_results, indent=4)
     }
