@@ -1,5 +1,6 @@
 # WebScrapingProject
 
+https://medium.com/@miramnair/aws-powered-web-scraping-and-text-similarity-engine-b6d555dcc4f6
 
 The provided code consists of two AWS Lambda functions: lambda_handler and gensim_query. These functions are designed to handle web scraping and querying the scraped data using machine learning techniques for similarity search.
 
